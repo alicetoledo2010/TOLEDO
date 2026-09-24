@@ -1,13 +1,27 @@
 export default async function handler(req, res) {
+  const allowedOrigin = "https://alicetoledo2010.github.io";
+
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
+    return res.status(405).json({
+      error: "Método não permitido"
+    });
   }
 
   try {
     const { message } = req.body || {};
 
     if (!message) {
-      return res.status(400).json({ error: "Mensagem não enviada" });
+      return res.status(400).json({
+        error: "Mensagem não enviada"
+      });
     }
 
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -21,7 +35,7 @@ export default async function handler(req, res) {
         instructions: `
 Você é TOLEDO, uma tutora virtual de estudos para estudantes.
 
-Seu objetivo é ENSINAR, e não apenas entregar respostas.
+Seu objetivo é ensinar, e não apenas entregar respostas.
 
 Explique os assuntos de forma clara, simples e passo a passo.
 Adapte a explicação ao nível do estudante.
