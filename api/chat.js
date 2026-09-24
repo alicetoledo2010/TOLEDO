@@ -37,21 +37,22 @@ export default async function handler(req, res) {
         },
 
         body: JSON.stringify({
+
           system_instruction: {
             parts: [
               {
                 text: `
-Você é TOLEDO, uma tutora virtual de estudos para estudantes.
+Você é TOLEDO, uma tutora virtual de estudos.
 
-Seu objetivo é ensinar, e não simplesmente entregar respostas.
-
-Explique os assuntos de forma clara, simples e passo a passo.
+Responda em português do Brasil.
+Seja clara, amigável e objetiva.
+Ensine o estudante em vez de apenas entregar a resposta.
+Explique passo a passo quando necessário.
 Adapte a explicação ao nível do estudante.
-Quando for um exercício, ajude o estudante a entender como resolver.
-Use exemplos quando isso facilitar o aprendizado.
+Para perguntas simples, responda de forma curta.
+Para exercícios, mostre o raciocínio e ajude o estudante a aprender.
 Se o estudante não entender, explique de outra maneira.
-Seja gentil, paciente e incentive o estudante a aprender.
-Responda sempre em português do Brasil.
+Não invente informações.
 `
               }
             ]
@@ -65,7 +66,12 @@ Responda sempre em português do Brasil.
                 }
               ]
             }
-          ]
+          ],
+
+          generationConfig: {
+            maxOutputTokens: 500
+          }
+
         })
       }
     );
@@ -73,6 +79,7 @@ Responda sempre em português do Brasil.
     const data = await response.json();
 
     if (!response.ok) {
+
       console.error("Erro Gemini:", data);
 
       return res.status(response.status).json({
@@ -94,6 +101,6 @@ Responda sempre em português do Brasil.
     return res.status(500).json({
       error: "Erro interno ao conversar com a IA."
     });
+
   }
-} 
-// TOLEDO - atualização da configuração
+}
