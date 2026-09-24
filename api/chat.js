@@ -95,4 +95,5 @@ Responda sempre em português do Brasil.
       error: "Erro interno ao conversar com a IA."
     });
   }
-}
+} 
+// TOLEDO - atualização da configuração
